@@ -1,0 +1,148 @@
+<template>
+  <a-form
+    ref="ruleForm"
+    :model="form"
+    :rules="rules"
+    :label-col="labelCol"
+    labelAlign='left'
+    :wrapper-col="wrapperCol"
+  >
+    <a-form-item ref="name" label="姓 名" name="name">
+      <a-input v-model:value="form.name" />
+    </a-form-item>
+    <a-form-item label="身份证号" name="region">
+      <a-select v-model:value="form.region" placeholder="please select your zone">
+        <a-select-option value="shanghai">
+          Zone one
+        </a-select-option>
+        <a-select-option value="beijing">
+          Zone two
+        </a-select-option>
+      </a-select>
+    </a-form-item>
+    <a-form-item label="手机号" required name="date1">
+      <a-date-picker
+        v-model:value="form.date1"
+        show-time
+        type="date"
+        placeholder="Pick a date"
+        style="width: 100%;"
+      />
+    </a-form-item>
+    <a-form-item label="店铺名称" name="delivery">
+      <a-switch v-model:checked="form.delivery" />
+    </a-form-item>
+    <a-form-item label="服务区域" name="type">
+      <a-checkbox-group v-model:value="form.type">
+        <a-checkbox value="1" name="type">
+          Online
+        </a-checkbox>
+        <a-checkbox value="2" name="type">
+          Promotion
+        </a-checkbox>
+        <a-checkbox value="3" name="type">
+          Offline
+        </a-checkbox>
+      </a-checkbox-group>
+    </a-form-item>
+    <a-form-item label="店铺logo" name="resource">
+      <a-radio-group v-model:value="form.resource">
+        <a-radio value="1">
+          Sponsor
+        </a-radio>
+        <a-radio value="2">
+          Venue
+        </a-radio>
+      </a-radio-group>
+    </a-form-item>
+    <a-form-item label="入驻形式" name="desc">
+      <a-textarea v-model:value="form.desc" />
+    </a-form-item>
+     <a-form-item  label="银行开户名" name="name">
+      <a-input v-model:value="form.name" />
+    </a-form-item>
+     <a-form-item  label="银行账号" name="name">
+      <a-input v-model:value="form.name" />
+    </a-form-item>
+    <a-form-item  label="开户行名称" name="name">
+      <a-input v-model:value="form.name" />
+    </a-form-item>
+    <a-form-item  label="开户行所在地" name="name">
+      <a-input v-model:value="form.name" />
+    </a-form-item>
+    <!-- <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+      <a-button type="primary" @click="onSubmit">
+        Create
+      </a-button>
+      <a-button style="margin-left: 10px;" @click="resetForm">
+        Reset
+      </a-button>
+    </a-form-item> -->
+  </a-form>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14},
+      other: '',
+      form: {
+        name: '',
+        region: undefined,
+        date1: undefined,
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: '',
+      },
+      rules: {
+        name: [
+          { required: true, message: 'Please input Activity name', trigger: 'blur' },
+          { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
+        ],
+        region: [{ required: true, message: 'Please select Activity zone', trigger: 'change' }],
+        date1: [
+          { required: true, message: 'Please pick a date', trigger: 'change', type: 'object' },
+        ],
+        type: [
+          {
+            type: 'array',
+            required: true,
+            message: 'Please select at least one activity type',
+            trigger: 'change',
+          },
+        ],
+        resource: [
+          { required: true, message: 'Please select activity resource', trigger: 'change' },
+        ],
+        desc: [{ required: true, message: 'Please input activity form', trigger: 'blur' }],
+      },
+    };
+  },
+  methods: {
+    onSubmit() {
+      this.$refs.ruleForm
+        .validate()
+        .then(() => {
+          console.log('values', this.form);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+    },
+    resetForm() {
+      this.$refs.ruleForm.resetFields();
+    },
+  },
+};
+</script>
+<style scoped lang="less">
+  .ant-form-item{
+    display: flex;
+    justify-content: space-around;
+  }
+  .ant-col-offset-4{
+    margin-left: 30%;
+  }
+</style>
