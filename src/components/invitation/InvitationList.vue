@@ -39,13 +39,16 @@
       :columns="columns"
       :pagination="false"
     >
+    <template v-slot:id="{ text, record,index }">
+      <a>{{ index+1 }}</a>
+    </template>
       <template v-slot:operation="{ text, record }">
         <a-popconfirm
           v-if="data.list"
           title="确定要下架么?"
           @confirm="onDelete(record.key)"
         >
-          <a>下架</a>
+          <a>{{text}}下架</a>
         </a-popconfirm>
          <a></a>
         <a-button type="link" size="small" v-if="data.list" @click="getInfo(record)" >
@@ -224,6 +227,7 @@ export default {
       {
         title: "序列",
         dataIndex: "id",
+        slots: { customRender: "id" },
       },
       {
         title: "标题",

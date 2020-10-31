@@ -25,6 +25,9 @@
       </div>
     </div>
     <a-table bordered :data-source="data.list" :columns="columns" :pagination="false" >
+      <template v-slot:id="{ text, record,index }">
+      <a>{{ index+1 }}</a>
+    </template>
     <template v-slot:operation="{ text, record }">
       <a-button type="link" size="small" v-if="data.list" @click="toDeal(record)" >
           <a>立即处理</a>
@@ -105,6 +108,7 @@ export default {
          {
           title: '序列',
           dataIndex: 'id',
+           slots: { customRender: 'id' },
         },
         {
           title: '投诉商品',

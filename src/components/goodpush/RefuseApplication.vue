@@ -2,14 +2,14 @@
 <div>
    <div class="top"></div>
   <a-table bordered :data-source="dataSource" :columns="columns" :pagination="false">
-    <template v-slot:name="{ text }">
-      <editable-cell :text="text"  />
+    <template v-slot:id="{ text, record,index }">
+      <a>{{ index+1 }}</a>
     </template>
       <template v-slot:status="{ text, record }">
       <a-tag  
-      :color="formatColor"
+        :color="formatColor[text]"
       >
-        {{formatStatus}}
+        {{formatStatus[text]}}
       </a-tag>
     </template>
     
@@ -18,17 +18,15 @@
 
 </template>
 <script>
-
+ import {ref,reactive,computed,toRefs} from 'vue'
 export default {
   components: {
   },
- 
-  data() {
-    return {
+ setup(){
+   let state=reactive({
       dataSource: [
         {
-          key: '0',
-          
+          key: '0',  
           goodID:'112',
           goodname: '嘎嘣脆',
           sort:'小零食',
@@ -53,10 +51,11 @@ export default {
         }
       ],
       count: 2,
-      columns: [
+       columns: [
          {
           title: '*',
-          dataIndex: 'key',
+          dataIndex: 'id',
+          slots: { customRender: 'id' },
         },
         {
           title: '商品ID',
@@ -92,58 +91,41 @@ export default {
           dataIndex: 'status',
           slots: { customRender: 'status' },
         }
-      ],
-    };
-  },
-   computed:{
-  formatStatus(){
-      for(let i=0;i<this.dataSource.length;i++){
-        if(this.dataSource[i].status==='0'){
-          return '已拒绝'
+      ]
+   });
+    let formatStatus=computed(()=>{
+      let val1=[];
+       state.dataSource.forEach(item=>{
+        if(item.status=='0'){
+         return val1.push('已同意')
         }
-        else  {
-          return '已同意'
+        else{
+         return val1.push('未同意')
+        } 
+      })
+      return val1
+    }),
+      formatColor=computed(()=>{
+      let val1=[];
+      state.dataSource.forEach(item=>{
+        if(item.status=='0'){
+         return val1.push('green')
         }
-      }
-  },
-  formatColor(val){
-    for(let i=0;i<this.dataSource.length;i++){
-        if(this.dataSource[i].status==='0'){
-          return 'red'
-        }
-        else {
-          return 'green'
-        }
-      }
-  }
- },
-  methods: {
-    onCellChange(key, dataIndex, value) {
-      const dataSource = [...this.dataSource];
-      const target = dataSource.find(item => item.key === key);
-      if (target) {
-        target[dataIndex] = value;
-        this.dataSource = dataSource;
-      }
-    },
-    onDelete(key) {
-      const dataSource = [...this.dataSource];
-      this.dataSource = dataSource.filter(item => item.key !== key);
-    },
-    handleAdd() {
-      const { count, dataSource } = this;
-      const newData = {
-        key: count,
-        name: `Edward King ${count}`,
-        age: 32,
-        address: `London, Park Lane no. ${count}`,
-      };
-      this.dataSource = [...dataSource, newData];
-      this.count = count + 1;
-    },
-  },
- 
-};
+        else{
+         return val1.push('red')
+        } 
+      })
+      return val1
+     }
+      );
+   return {
+     ...toRefs(state),
+      formatStatus,
+      formatColor
+   }
+ }
+
+}
 </script>
 <style lang="less">
 .top{

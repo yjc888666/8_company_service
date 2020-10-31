@@ -25,6 +25,9 @@
       </div>
     </div>
     <a-table bordered :data-source="data.list" :columns="columns" :pagination="false" >
+       <template v-slot:id="{ text, record,index }">
+      <a>{{ index+1 }}</a>
+    </template>
     <template v-slot:operation="{ text, record }">
       <a-popconfirm
         v-if="data.list"
@@ -102,6 +105,7 @@ export default {
          {
           title: '序列',
           dataIndex: 'id',
+          slots: { customRender: 'id' },
         },
         {
           title: '标题',

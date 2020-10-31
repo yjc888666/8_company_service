@@ -30,6 +30,9 @@
       </div>
     </div>
     <a-table bordered :data-source="data.list.slice(pageSize*(current-1),pageSize*current)" :columns="columns" :pagination="false" >
+        <template v-slot:id="{ text, record,index }">
+      <a>{{ index+1 }}</a>
+    </template>
     <template v-slot:operation="{ text, record }">
       <a-popconfirm
 
@@ -194,6 +197,7 @@ export default {
          {
           title: '序列',
           dataIndex: 'id',
+           slots: { customRender: 'id' },
         },
         {
           title: '标题',

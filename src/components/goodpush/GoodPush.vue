@@ -6,8 +6,8 @@
    </a-button>
    </div>
   <a-table bordered :data-source="dataSource" :columns="columns" :pagination="false">
-    <template v-slot:name="{ text }">
-      <editable-cell :text="text"  />
+    <template v-slot:id="{ text, record,index }">
+      <a>{{ index+1 }}</a>
     </template>
     <template v-slot:operation="{ text, record }">
       <a-popconfirm
@@ -82,7 +82,8 @@ export default {
       columns: [
          {
           title: '*',
-          dataIndex: 'key',
+          dataIndex: 'id',
+          slots: { customRender: 'id' },
         },
         {
           title: '商品ID',
